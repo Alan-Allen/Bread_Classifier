@@ -58,7 +58,7 @@ def main():
     print(f"   類別清單: {class_names}")
     print(f"   訓練集: {dataset_sizes['train']} 張 | 驗證集: {dataset_sizes['val']} 張")
 
-    print("\n🏗️  正在下載並建立 ResNet18 模型...")
+    print("\n正在下載並建立 ResNet18 模型...")
     model = models.resnet18(pretrained=True)
     
     num_ftrs = model.fc.in_features

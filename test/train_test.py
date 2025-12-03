@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(PROJECT_ROOT, "data")
-MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "models", "best_bread_model.pth")
+MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "test", "models", "best_bread_model.pth")
 
 BATCH_SIZE = 32  
 LEARNING_RATE = 0.001
