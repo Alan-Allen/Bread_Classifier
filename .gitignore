@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 
-# --- 專案資料 (太大了，不要上傳) ---
+# --- 專案資料  ---
 data/
 models/
 save/

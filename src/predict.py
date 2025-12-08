@@ -38,7 +38,7 @@ class BreadPredictor:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"載入 AI 模型中... (使用設備: {self.device})")
         
-        # 1. 建立模型架構 (ResNet18)
+        # 1. 建立模型架構 (ResNet)
         self.model = models.resnet18(pretrained=False) # 預測時不用下載 ImageNet 權重，因為我們要載入自己的
         num_ftrs = self.model.fc.in_features
         self.model.fc = torch.nn.Linear(num_ftrs, len(CLASS_NAMES))

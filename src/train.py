@@ -8,11 +8,11 @@ import copy
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(PROJECT_ROOT, "data")
-MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "models", "best_bread_model.pth")
+MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "models", "bread_model1.pth")
 
 BATCH_SIZE = 32  
 LEARNING_RATE = 0.001
-EPOCHS = 15      
+EPOCHS = 15
 
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -54,14 +54,14 @@ def main():
     class_names = image_datasets['train'].classes
     
     print(f"資料載入成功！")
-    print(f"   類別數量: {len(class_names)} 種")
-    print(f"   類別清單: {class_names}")
-    print(f"   訓練集: {dataset_sizes['train']} 張 | 驗證集: {dataset_sizes['val']} 張")
+    print(f"類別數量: {len(class_names)} 種")
+    print(f"類別清單: {class_names}")
+    print(f"訓練集: {dataset_sizes['train']} 張 | 驗證集: {dataset_sizes['val']} 張")
 
     print("\n正在下載並建立 ResNet18 模型...")
     model = models.resnet18(pretrained=True)
     
-    num_ftrs = model.fc.in_features
+    num_ftrs = model.fc.in_features #特徵提取
     model.fc = nn.Linear(num_ftrs, len(class_names))
 
     model = model.to(device)

@@ -13,7 +13,7 @@ MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "test", "models", "best_bread_model
 
 BATCH_SIZE = 32  
 LEARNING_RATE = 0.001
-EPOCHS = 15      
+EPOCHS = 20
 
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -21,9 +21,9 @@ def main():
 
     data_transforms = {
         'train': transforms.Compose([
-            transforms.RandomResizedCrop(224),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),            
+            transforms.RandomResizedCrop(224), #隨機大小及隨機長寬比裁剪原始圖片
+            transforms.RandomHorizontalFlip(), #隨機水平翻轉圖片
+            transforms.ToTensor(), #轉換為張量 (Tensor)
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]),
         
@@ -44,9 +44,13 @@ def main():
     dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
     class_names = image_datasets['train'].classes
     
+    print(f"資料載入成功！")
     print(f"類別數量: {len(class_names)} 種")
+    print(f"類別清單: {class_names}")
+    print(f"訓練集: {dataset_sizes['train']} 張 | 驗證集: {dataset_sizes['val']} 張")
 
     #模型建立
+    print("\n正在下載並建立 ResNet 模型...")
     model = models.resnet18(pretrained=True)
     num_ftrs = model.fc.in_features
     model.fc = nn.Linear(num_ftrs, len(class_names))
