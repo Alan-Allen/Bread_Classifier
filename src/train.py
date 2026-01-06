@@ -2,17 +2,65 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms, models
+
 import os
 import time
 import copy
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(PROJECT_ROOT, "data")
 MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "models", "bread_model1.pth")
 
-BATCH_SIZE = 32  
+BATCH_SIZE = 32
 LEARNING_RATE = 0.001
 EPOCHS = 15
+
+def plot_confusion_matrix(model, dataloader, class_names, device):
+    """
+    輸入模型與資料，繪製混淆矩陣
+    """
+    model.eval()  # 設定為評估模式
+    all_preds = []
+    all_labels = []
+
+    print("正在計算混淆矩陣，請稍候...")
+
+    # 1. 蒐集所有預測結果與真實標籤
+    with torch.no_grad():  # 不需要算梯度，節省記憶體
+        for inputs, labels in dataloader:
+            inputs = inputs.to(device)
+            labels = labels.to(device)
+
+            outputs = model(inputs)
+            _, preds = torch.max(outputs, 1)
+
+            # 將 GPU 上的 Tensor 轉回 CPU 並轉成 numpy 陣列
+            all_preds.extend(preds.cpu().numpy())
+            all_labels.extend(labels.cpu().numpy())
+
+    # 2. 使用 sklearn 計算混淆矩陣
+    cm = confusion_matrix(all_labels, all_preds)
+
+    # 3. 使用 seaborn 畫出漂亮的熱力圖
+    plt.figure(figsize=(10, 8)) # 設定圖表大小
+    
+    # 參數解釋：
+    # annot=True: 在格子裡顯示數字
+    # fmt='d': 數字格式為整數 (Integer)
+    # cmap='Blues': 使用藍色系 (也可以改 'Greens')
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                xticklabels=class_names, yticklabels=class_names)
+
+    plt.ylabel('True Label (真實類別)')
+    plt.xlabel('Predicted Label (預測類別)')
+    plt.title('Confusion Matrix')
+    plt.show()
+
 
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -61,8 +109,8 @@ def main():
     print("\n正在下載並建立 ResNet18 模型...")
     model = models.resnet18(pretrained=True)
     
-    num_ftrs = model.fc.in_features #特徵提取
-    model.fc = nn.Linear(num_ftrs, len(class_names))
+    num_ftrs = model.fc.in_features # 檢查最後一層的輸入特徵數
+    model.fc = nn.Linear(num_ftrs, len(class_names)) # 替換最後一層
 
     model = model.to(device)
 
@@ -83,6 +131,7 @@ def main():
         print('-' * 10)
 
         for phase in ['train', 'val']:
+            
             if phase == 'train':
                 model.train() 
             else:
@@ -130,6 +179,8 @@ def main():
     model.load_state_dict(best_model_wts)
     torch.save(model.state_dict(), MODEL_SAVE_PATH)
     print(f"模型已儲存至: {MODEL_SAVE_PATH}")
+    
+    plot_confusion_matrix(model, dataloaders['val'], class_names, device)
 
 if __name__ == '__main__':
     main()

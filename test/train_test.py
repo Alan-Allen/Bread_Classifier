@@ -13,7 +13,7 @@ MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "test", "models", "best_bread_model
 
 BATCH_SIZE = 32  
 LEARNING_RATE = 0.001
-EPOCHS = 20
+EPOCHS = 50
 
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
