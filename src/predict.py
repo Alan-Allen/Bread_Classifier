@@ -4,10 +4,11 @@ from PIL import Image
 import cv2
 import os
 
-from config import CLASS_NAMES, CHINESE_MAP
+from src.config import CLASS_NAMES, CHINESE_MAP
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "best_bread_model.pth")
+#MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "best_bread_model.pth")
+MODEL_PATH = os.path.join(PROJECT_ROOT, "test", "models", "ResNet18_Epochs20_2.pth")
 
 class BreadPredictor:
     def __init__(self):

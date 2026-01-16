@@ -4,7 +4,7 @@ from tkinter import filedialog
 import cv2
 import numpy as np
 
-from view.get_bread_roi import get_bread_roi
+from get_bread_roi import get_bread_roi
 from src.predict import BreadPredictor
     
 root = tk.Tk()
