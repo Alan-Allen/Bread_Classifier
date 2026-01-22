@@ -5,7 +5,7 @@ __pycache__/
 # --- 專案資料  ---
 data/
 models/
-save/
+zip/
 test/models/
 
 # --- IDE 設定檔 ---

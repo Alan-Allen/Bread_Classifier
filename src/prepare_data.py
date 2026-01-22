@@ -3,7 +3,6 @@ import shutil
 import random
 import sys
 
-# 🔥 加入這行，確保可以從根目錄讀取到 src 資料夾
 sys.path.append(os.getcwd())
 
 try:

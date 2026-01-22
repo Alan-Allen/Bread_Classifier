@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 
-
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(PROJECT_ROOT, "data")
 MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "models", "ResNet18_Epochs20_2.pth")
