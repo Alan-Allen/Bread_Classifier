@@ -18,11 +18,13 @@ except ImportError:
     def get_bread_roi(path, text):
         print(f"找不到 src.get_bread_roi，將無法顯示綠框: {text}")
 
-MODEL_FILENAME = "DenseNet121_20260116_205627.pth" 
+# MODEL_FILENAME = "DenseNet121_20260116_205627.pth"
+# MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "DenseNet", MODEL_FILENAME)
 
-MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "DenseNet", MODEL_FILENAME)
+MODEL_PATH = "D:\Project\ML\Bread_classifier\models\ResNet\Bread_20\ResNet18_20260125_194506.pth"
 
-MODEL_ARCH = "densenet121"
+# MODEL_ARCH = "densenet121"
+MODEL_ARCH = "resnet18"
 
 root = tk.Tk()
 root.title('img choose')

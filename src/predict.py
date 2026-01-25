@@ -16,7 +16,7 @@ except ImportError:
     sys.exit(1)
 
 class BreadPredictor:
-    def __init__(self, model_path, model_arch="densenet121", threshold=70.0):
+    def __init__(self, model_path, model_arch="resnet18", threshold=70.0):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"啟動預測引擎... (架構: {model_arch}, 設備: {self.device})")
         
@@ -38,8 +38,7 @@ class BreadPredictor:
         self.model.eval()
 
         self.transform = transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
+            transforms.Resize((224, 224)),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
@@ -86,12 +85,12 @@ class BreadPredictor:
         else:
             eng_name = CLASS_NAMES[predicted_idx.item()]
             chi_name = CHINESE_MAP.get(eng_name, eng_name)
-
+            
         return eng_name, chi_name, score
 
 if __name__ == "__main__":    
-    pth_path = os.path.join(PROJECT_ROOT, "models", "DenseNet", "DenseNet121_20260116_205627.pth")
-    predictor = BreadPredictor(model_path=pth_path, model_arch="densenet121")
+    # pth_path = os.path.join(PROJECT_ROOT, "models", "DenseNet", "DenseNet121_20260116_205627.pth")
+    # predictor = BreadPredictor(model_path=pth_path, model_arch="densenet121")
     
-    # pth_path = os.path.join(PROJECT_ROOT, "models", "ResNet18_old.pth")
-    # predictor = BreadPredictor(model_path=pth_path, model_arch="resnet18")
+    pth_path = os.path.join(PROJECT_ROOT, "models", "ResNet", "Bread_20", "ResNet18_20260125_194506.pth")
+    predictor = BreadPredictor(model_path=pth_path, model_arch="resnet18")
