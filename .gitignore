@@ -1,17 +1,13 @@
-# --- Python 暫存檔 ---
 __pycache__/
 *.py[cod]
 
-# --- 專案資料  ---
 data/
 models/
 zip/
 test/models/
 
-# --- IDE 設定檔 ---
 .vscode/
 .idea/
 .ipynb_checkpoints/
 
-# --- 其他 ---
 *.log
