@@ -5,26 +5,11 @@ import numpy as np
 import os
 import sys
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-if PROJECT_ROOT not in sys.path:
-    sys.path.append(PROJECT_ROOT)
+from src import Config, get_bread_roi
+from predict import BreadPredictor
 
-from src.predict import BreadPredictor
-
-try:
-    from src.get_bread_roi import get_bread_roi
-except ImportError:
-    print("警告: 找不到 src.get_bread_roi，將無法顯示綠框。")
-    def get_bread_roi(path, text):
-        print(f"找不到 src.get_bread_roi，將無法顯示綠框: {text}")
-
-# MODEL_FILENAME = "DenseNet121_20260116_205627.pth"
-# MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "DenseNet", MODEL_FILENAME)
-
-MODEL_PATH = "D:\Project\ML\Bread_classifier\models\ResNet\Bread_20\ResNet18_20260125_194506.pth"
-
-# MODEL_ARCH = "densenet121"
-MODEL_ARCH = "resnet18"
+MODEL_FILENAME = "ResNet18_20260125_194506.pth"
+MODEL_PATH = os.path.join(Config.MODEL_SAVE_DIR, "Bread_20", MODEL_FILENAME)
 
 root = tk.Tk()
 root.title('img choose')
@@ -32,7 +17,7 @@ root.geometry('200x200')
 
 print("-" * 50)
 try:
-    predictor = BreadPredictor(model_path=MODEL_PATH, model_arch=MODEL_ARCH)
+    predictor = BreadPredictor(model_path=MODEL_PATH, model_arch=Config.MODEL_NAME)
 except Exception as e:
     print(f"初始化失敗: {e}")
     print("按 Enter 鍵結束程式...")

@@ -3,23 +3,17 @@ import shutil
 import random
 import sys
 
-sys.path.append(os.getcwd())
+from src.config import RAW_BREAD_MAP as NAME_MAP
 
-try:
-    from src.config import RAW_BREAD_MAP as NAME_MAP
-except ImportError:
-    print("錯誤: 找不到 src/config.py，請確認檔案結構。")
-    exit()
-
-PROJECT_ROOT = "D:\\Project\\ML\\Bread_classifier"
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 RAW_DATA_PATH = os.path.join(PROJECT_ROOT, "data", "raw")
 TRAIN_DATA_PATH = os.path.join(PROJECT_ROOT, "data", "train")
 VAL_DATA_PATH = os.path.join(PROJECT_ROOT, "data", "val")
 TEST_DATA_PATH = os.path.join(PROJECT_ROOT, "data", "test")
 
-TEST_RATIO = 0.1         
-VAL_RATIO_OF_REST = 0.2  
+TEST_RATIO = 0.1
+VAL_RATIO_OF_REST = 0.2
 
 # 清空資料夾內容
 def clear_directory(path):
