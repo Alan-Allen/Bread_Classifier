@@ -21,10 +21,11 @@ except ImportError:
 # MODEL_FILENAME = "DenseNet121_20260116_205627.pth"
 # MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "DenseNet", MODEL_FILENAME)
 
-MODEL_PATH = "D:\Project\ML\Bread_classifier\models\ResNet\Bread_20\ResNet18_20260125_194506.pth"
+# MODEL_PATH = "D:\Project\ML\Bread_classifier\models\ResNet\Bread_20\ResNet18_20260125_194506.pth"
+MODEL_PATH = "D:\Project\ML\Bread_classifier\models\DenseNet\Bread20\DenseNet121_20260126_182735.pth"
 
-# MODEL_ARCH = "densenet121"
-MODEL_ARCH = "resnet18"
+MODEL_ARCH = "densenet121"
+#MODEL_ARCH = "resnet18"
 
 root = tk.Tk()
 root.title('img choose')

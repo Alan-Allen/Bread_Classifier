@@ -88,9 +88,9 @@ class BreadPredictor:
             
         return eng_name, chi_name, score
 
-if __name__ == "__main__":    
-    # pth_path = os.path.join(PROJECT_ROOT, "models", "DenseNet", "DenseNet121_20260116_205627.pth")
-    # predictor = BreadPredictor(model_path=pth_path, model_arch="densenet121")
+if __name__ == "__main__":
+    pth_path = os.path.join(PROJECT_ROOT, "models", "DenseNet", "Bread20", "DenseNet121_20260126_182735.pth")
+    predictor = BreadPredictor(model_path=pth_path, model_arch="densenet121")
     
-    pth_path = os.path.join(PROJECT_ROOT, "models", "ResNet", "Bread_20", "ResNet18_20260125_194506.pth")
-    predictor = BreadPredictor(model_path=pth_path, model_arch="resnet18")
+    # pth_path = os.path.join(PROJECT_ROOT, "models", "ResNet", "Bread_20", "ResNet18_20260125_194506.pth")
+    # predictor = BreadPredictor(model_path=pth_path, model_arch="resnet18")

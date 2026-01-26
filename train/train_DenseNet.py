@@ -26,7 +26,7 @@ timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 model_filename = f"DenseNet121_{timestamp}.pth"
 
-MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "models", "DenseNet", model_filename)
+MODEL_SAVE_PATH = os.path.join(PROJECT_ROOT, "models", "DenseNet", "Bread20", model_filename)
 
 
 def plot_confusion_matrix(model, dataloader, class_names, device):
@@ -112,15 +112,15 @@ def main():
 
     data_transforms = {
         'train': transforms.Compose([
-            transforms.RandomResizedCrop(224),
+            transforms.Resize((224, 224)),
             transforms.RandomHorizontalFlip(),
+            transforms.RandomRotation(10),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]),
         
         'val': transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
+            transforms.Resize((224, 224)),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]),
@@ -214,6 +214,7 @@ def main():
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
+                print("發現更準的模型！暫存中...")
 
     time_elapsed = time.time() - since
     print(f'\n訓練完成！總耗時: {time_elapsed // 60:.0f}分 {time_elapsed % 60:.0f}秒')
@@ -224,8 +225,10 @@ def main():
     torch.save(model.state_dict(), MODEL_SAVE_PATH)
     print(f"模型已儲存至: {MODEL_SAVE_PATH}")
     
+    #詳細數據查看
     evaluate_detailed_metrics(model, dataloaders['val'], class_names, device)
-
+    
+    #混淆矩陣
     plot_confusion_matrix(model, dataloaders['val'], class_names, device)
 
 if __name__ == '__main__':
