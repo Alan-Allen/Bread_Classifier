@@ -7,7 +7,7 @@ def train_one_epoch(model, dataloader, criterion, optimizer, device):
     running_corrects = 0
     total_samples = 0
     
-    pbar = tqdm(dataloader, desc="Training", leave=False)
+    pbar = tqdm(dataloader, desc="Training", leave=False, ncols=100, mininterval=0.5)
     
     for inputs, labels in dataloader:
         inputs = inputs.to(device)
@@ -44,7 +44,7 @@ def validate_one_epoch(model, dataloader, criterion, device):
     running_corrects = 0
     total_samples = 0
     
-    pbar = tqdm(dataloader, desc="Validating", leave=False)
+    pbar = tqdm(dataloader, desc="Validating", leave=False, ncols=100, mininterval=0.5)
     
     with torch.no_grad():
         for inputs, labels in dataloader:

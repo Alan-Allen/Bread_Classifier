@@ -1,6 +1,10 @@
+import os
+import csv
 import torch
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from datetime import datetime
 from sklearn.metrics import classification_report, confusion_matrix, precision_recall_fscore_support
 
 def plot_confusion_matrix(model, dataloader, class_names, device):
@@ -26,6 +30,7 @@ def plot_confusion_matrix(model, dataloader, class_names, device):
     plt.xlabel('Predicted Label (預測類別)')
     plt.title('Confusion Matrix')
     plt.show()
+    
 
 def evaluate_detailed_metrics(model, dataloader, class_names, device):
     model.eval()
@@ -80,4 +85,63 @@ def evaluate_detailed_metrics(model, dataloader, class_names, device):
     
     print("="*50 + "\n")
     
-    return top1_acc, f1
+    
+def save_experiment_results(save_dir, config, model_name, pretrained, train_time_str, dataset_sizes, best_metrics, full_report_dict):
+    report_dir = os.path.join(save_dir, "reports")
+    os.makedirs(report_dir, exist_ok=True)
+    
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    file_safe_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    summary_data = {
+        "Date": timestamp,
+        "Model_Arch": model_name,
+        "Pretrained": str(pretrained),
+        "Epochs": getattr(config, 'EPOCHS', 'N/A'),
+        "Batch_Size": getattr(config, 'BATCH_SIZE', 'N/A'),
+        "Learning_Rate": getattr(config, 'LEARNING_RATE', 'N/A'),
+        "Num_Classes": len(getattr(config, 'CLASS_NAMES', [])),
+        "Train_Size": dataset_sizes.get('train', 0),
+        "Val_Size": dataset_sizes.get('val', 0),
+        "Best_Val_Acc": f"{best_metrics.get('best_acc', 0):.4f}",
+        "Top1_Acc": f"{best_metrics.get('top1', 0):.4f}",
+        "Top3_Acc": f"{best_metrics.get('top3', 0):.4f}",
+        "Macro_F1": f"{best_metrics.get('macro_f1', 0):.4f}",
+        "Min_Val_Loss": f"{best_metrics.get('min_loss', 0):.4f}",
+        "Train_Time": train_time_str,
+        "Device": str(getattr(config, 'DEVICE', 'cpu'))
+    }
+
+    csv_path = os.path.join(save_dir, f"training_summary_{file_safe_time}.csv")
+    file_exists = os.path.isfile(csv_path)
+    
+    with open(csv_path, "a", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=summary_data.keys())
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow(summary_data)
+        
+    print(f"實驗摘要已寫入: {csv_path}")
+
+    txt_filename = f"Report_{model_name}_{file_safe_time}.txt"
+    txt_path = os.path.join(report_dir, txt_filename)
+    
+    with open(txt_path, "w", encoding="utf-8") as f:
+        f.write(f"=== Experiment Report: {model_name} ===\n")
+        f.write(f"Date: {timestamp}\n")
+        f.write("-" * 50 + "\n")
+        
+        for k, v in summary_data.items():
+            f.write(f"{k:<15}: {v}\n")
+            
+        f.write("-" * 50 + "\n")
+        f.write("=== Per-Class Performance (各類別詳細數據) ===\n\n")
+        
+        df = pd.DataFrame(full_report_dict).transpose()
+        if 'support' in df.columns:
+            df['support'] = df['support'].astype(int)
+        
+        f.write(df.to_string())
+        f.write("\n\n" + "="*50)
+
+    print(f"詳細報告已儲存: {txt_path}")

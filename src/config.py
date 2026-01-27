@@ -13,8 +13,9 @@ class Config:
     BATCH_SIZE = 32
     LEARNING_RATE = 0.001
     
+    EPOCHS = 20
+    
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"使用運算設備: {device}")
     
     plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei'] 
     plt.rcParams['axes.unicode_minus'] = False

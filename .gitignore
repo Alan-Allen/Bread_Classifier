@@ -3,8 +3,7 @@ __pycache__/
 
 data/
 models/
-zip/
-test/models/
+Log/
 
 .vscode/
 .idea/
